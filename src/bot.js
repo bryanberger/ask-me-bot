@@ -5,9 +5,11 @@ import Confluence from 'confluence-api'
 import Cheerio from 'cheerio'
 import natural from 'natural'
 import slackify from 'slackify-html'
+import express from 'express'
 
 dotenv.config({ silent: true })
 
+let port = process.env.PORT || 8080;
 let $ = null
 let faqPageId = '130672178' //'24445453'
 let peoplePageId = '130681349'
@@ -30,15 +32,23 @@ bot.startRTM((err, bot, payload) => {
   // getContentAndClassifier()
   // getPeopleContent()
   getContentAndClassifier(true).then(() => {
-    console.log('getContentAndClassifier')
     getPeopleContent(true).then(() => {
-      console.log('getPeopleContent')
+      console.log('init')
     })
   })
 
   if (err) {
     throw new Error('Could not connect to Slack');
   }
+})
+
+let app = express()
+app.use(express.static(__dirname + '/src/views'))
+app.get('/', (req, res) => {
+  res.render('index');
+})
+app.listen(port, () => {
+    console.log('app is running on ' + port)
 })
 
 controller.hears(['who made you', 'who made u', 'who is your maker', 'who is your master'],
@@ -56,14 +66,8 @@ controller.hears(['!refresh', '!update'],
   console.log('heard', message.text)
   bot.reply(message, 'Updating my database from :confluence: Please hold...')
 
-  // confluence.getCustomContentById({id: peoplePageId, expanders:['body.storage', 'body.view', 'version']}, function(err, data) {
-  //   console.log(err, data)
-  // });
-
   getContentAndClassifier(true).then(() => {
-    console.log('getContentAndClassifier')
     getPeopleContent(true).then(() => {
-      console.log('getPeopleContent')
       bot.reply(message, 'Update Complete!')
     })
   })
@@ -179,7 +183,7 @@ function getPeopleContent(force) {
 
           // product a final `slackified` string
           // var response = slackify($(this).find('td').eq(2).html())
-console.log(description)
+
           var item = {
             type: 'Person',
             classifier: classifierLabel,
