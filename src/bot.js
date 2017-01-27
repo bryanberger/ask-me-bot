@@ -43,12 +43,11 @@ bot.startRTM((err, bot, payload) => {
 })
 
 let app = express()
-app.use(express.static(__dirname + '/src/views'))
-app.get('/', (req, res) => {
-  res.render('index');
+app.get('/', function (req, res) {
+  res.send('Hello World!')
 })
 app.listen(port, () => {
-    console.log('app is running on ' + port)
+  console.log('app is running on ' + port)
 })
 
 controller.hears(['who made you', 'who made u', 'who is your maker', 'who is your master'],
