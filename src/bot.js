@@ -1,3 +1,7 @@
+/* TODO:
+ - Cache for 1 hour, check if cache is empty and re-call Confluence as a 1hr auto-refresh
+ - removed all timed cache to fix empty cache errors
+*/
 import dotenv from 'dotenv'
 import Botkit from 'botkit'
 import cache from 'memory-cache'
@@ -26,7 +30,7 @@ let bot = controller.spawn({
 })
 // let classifier = new natural.BayesClassifier()
 let classifier = new natural.LogisticRegressionClassifier()
-let minConfidence = 0.6
+let minConfidence = 0.7
 
 bot.startRTM((err, bot, payload) => {
   // getContentAndClassifier()
@@ -217,11 +221,11 @@ function getPeopleContent(force) {
         if(oldClassifier && oldItems) {
           var mergedClassifier = [...oldClassifier, ...classifier]
           var mergedItems = [...oldItems, ...items]
-          cache.put('items', mergedItems, 3600000)
-          cache.put('classifier', JSON.stringify(mergedClassifier), 3600000)
+          cache.put('items', mergedItems)
+          cache.put('classifier', JSON.stringify(mergedClassifier))
         } else {
-          cache.put('items', items, 3600000)
-          cache.put('classifier', JSON.stringify(classifier), 3600000)
+          cache.put('items', items)
+          cache.put('classifier', JSON.stringify(classifier))
         }
 
         resolve(items)
@@ -289,11 +293,11 @@ function getContentAndClassifier(force) {
         if(!force && oldClassifier && oldItems) {
           var mergedClassifier = [...oldClassifier, ...classifier]
           var mergedItems = [...oldItems, ...items]
-          cache.put('items', mergedItems, 3600000)
-          cache.put('classifier', JSON.stringify(mergedClassifier), 3600000)
+          cache.put('items', mergedItems)
+          cache.put('classifier', JSON.stringify(mergedClassifier))
         } else {
-          cache.put('items', items, 3600000)
-          cache.put('classifier', JSON.stringify(classifier), 3600000)
+          cache.put('items', items)
+          cache.put('classifier', JSON.stringify(classifier))
         }
         resolve(items)
       } else {
