@@ -40,9 +40,9 @@ bot.startRTM((err, bot, payload) => {
   // getContentAndClassifier()
   // getPeopleContent()
   getContentAndClassifier(true).then(() => {
-    getPeopleContent(true).then(() => {
       console.log('init')
-    })
+    // getPeopleContent(true).then(() => {
+    // })
   })
 
   if (err) {
@@ -74,9 +74,9 @@ controller.hears(['!refresh', '!update'],
   bot.reply(message, 'Updating my database from :confluence: Please hold...')
 
   getContentAndClassifier(true).then(() => {
-    getPeopleContent(true).then(() => {
+    // getPeopleContent(true).then(() => {
       bot.reply(message, 'Update Complete!')
-    })
+    // })
   })
 })
 
