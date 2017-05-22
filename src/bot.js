@@ -30,7 +30,11 @@ let bot = controller.spawn({
 })
 // let classifier = new natural.BayesClassifier()
 let classifier = new natural.LogisticRegressionClassifier()
-let minConfidence = 0.7
+let minConfidence = 0.85
+
+// // start the cache
+// cache.put('items', []);
+// cache.put('classifier', []);
 
 bot.startRTM((err, bot, payload) => {
   // getContentAndClassifier()
