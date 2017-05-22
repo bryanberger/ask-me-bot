@@ -10,6 +10,7 @@ import Cheerio from 'cheerio'
 import natural from 'natural'
 import slackify from 'slackify-html'
 import express from 'express'
+import os from 'os'
 
 dotenv.config({ silent: true })
 
@@ -58,9 +59,14 @@ app.listen(port, () => {
   console.log('app is running on ' + port)
 })
 
-controller.hears(['who made you', 'who made u', 'who is your maker', 'who is your master'],
+controller.hears(['!uptime', 'who are you', 'who made you'],
 'direct_message,direct_mention,mention', function(bot, message) {
-  bot.reply(message, ':berger: :monica: :craig: :sang:')
+  var hostname = os.hostname()
+  var uptime = formatUptime(process.uptime())
+
+  bot.reply(message, ':robot_face: I am a bot named <@' + bot.identity.name + '>.\n' +
+  'I was made by :berger: :monica: :craig: :sang: during a Festivus Hackathon in 2016.\n' +
+  'I have been up for `' + uptime + '` on `' + hostname + '`.')
 })
 
 controller.hears(['starboy', 'star boy'],
@@ -336,6 +342,24 @@ function getContentAndClassifier(force) {
       }
     })
   })
+}
+
+function formatUptime(uptime) {
+    var unit = 'second';
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'minute';
+    }
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'hour';
+    }
+    if (uptime != 1) {
+        unit = unit + 's';
+    }
+
+    uptime = uptime + ' ' + unit;
+    return uptime;
 }
 
 function toMaxValue(x, y) {
