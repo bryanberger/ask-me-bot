@@ -80,6 +80,33 @@ controller.hears(['!refresh', '!update'],
   })
 })
 
+controller.hears(['!channels'],
+'direct_message,direct_mention,mention', function(bot, message) {
+  console.log('heard', message.text)
+  var list = []
+
+  bot.api.channels.list({
+    exclude_members: true,
+    exclude_archived: true
+  }, function(err, res) {
+    if(err) {
+      bot.botkit.log('error-help', err)
+      bot.reply(message, err)
+      return
+    }
+
+    var channels = res.channels
+
+    channels.map(channel => {
+      if(channel.is_member) {
+        list.push('<#'+channel.id+'|'+channel.name+'>')
+      }
+    })
+
+    bot.reply(message, '*I am currently in the follow channels:*\n' + list.join(', '))
+  })
+})
+
 controller.hears(['help', 'halp'],
 'direct_message,direct_mention,mention', function(bot, message) {
   var attachments = []
