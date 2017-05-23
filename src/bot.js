@@ -31,7 +31,8 @@ let bot = controller.spawn({
 })
 // let classifier = new natural.BayesClassifier()
 let classifier = new natural.LogisticRegressionClassifier()
-let minConfidence = 0.85
+let minConfidence = 0.8
+let noConfidence = 0.5
 
 // // start the cache
 // cache.put('items', []);
@@ -178,7 +179,11 @@ controller.hears('.*',
       })
       // bot.reply(message, item.description + '_-' + item.name + '_')
     }
+  } else if(guess.value <= noConfidence) {
+    // less than 0.5 is usually a complete guess and wrongly replies with a hmm
+    return
   } else {
+    // between (0.5 and 0.8)
     bot.reply(message, 'hmm...not sure I have the answer, feel free to reach out to hrteam@ga.co')
   }
 })
