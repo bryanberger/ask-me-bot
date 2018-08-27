@@ -184,7 +184,7 @@ controller.hears('.*',
     return
   } else {
     // between (0.5 and 0.8)
-    bot.reply(message, 'hmm...not sure I have the answer, feel free to reach out to hrteam@ga.co')
+    bot.reply(message, ':robot_face: hmm, i\'m not sure I have the answer to that one...')
   }
 })
 
