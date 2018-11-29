@@ -5,6 +5,7 @@ This bot consumes a table from a page on Confluence and uses Logistic Regression
 ## Setup
 - copy ``.env-sample` to `.env` and update the creds/api keys
 - edit the `faqPageId` var to the confluence page you want to parse
+- run `npm start` to test
 
 ## Usage
 - Type `help` and the bot will tell you what it's trained for
