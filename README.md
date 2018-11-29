@@ -3,7 +3,7 @@
 This bot consumes a table from a page on Confluence and uses Logistic Regression Classifiers to return the most accurate response to the end-user.
 
 ## Setup
-- copy ``.env-sample` to `.env` and update the creds/api keys
+- copy `.env-sample` to `.env` and update the creds/api keys
 - edit the `faqPageId` var to the confluence page you want to parse
 - run `npm start` to test
 
